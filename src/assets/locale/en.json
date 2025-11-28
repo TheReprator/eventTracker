@@ -3,8 +3,8 @@
         "message": "Welcome to Event Tracker"
     },
     "rootTab": {
-        "home": "Home",
-        "profile": "Profile"
+        "Event": "Event",
+        "Profile": "Profile"
     },
     "homeScreen": {
         "keyword": "keyword",
