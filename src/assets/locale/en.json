@@ -1,0 +1,19 @@
+{
+    "splashScreen": {
+        "message": "Welcome to Event Tracker"
+    },
+    "rootTab": {
+        "home": "Home",
+        "profile": "Profile"
+    },
+    "homeScreen": {
+        "keyword": "keyword",
+        "city": "city",
+        "submit": "submit"
+    },
+    "profileScreen": {
+        "title": "Profile",
+        "toggleTheme": "Toggle Theme",
+        "toggleLanguage": "Toggle Language  {{language}}"
+    }
+}

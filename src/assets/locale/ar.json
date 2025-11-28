@@ -1,0 +1,20 @@
+{
+  "splashScreen": {
+    "message": "مرحبًا بك في متعقب الأحداث"
+  },
+  "rootTab": {
+    "home": "الرئيسية",
+    "profile": "الملف الشخصي"
+  },
+  "homeScreen": {
+    "keyword": "الكلمة المفتاحية",
+    "city": "المدينة",
+    "submit": "إرسال"
+  },
+  "profileScreen": {
+    "title": "الملف الشخصي",
+    "toggleTheme": "تغيير النمط إلى ",
+    "toggleLanguage": "تبديل اللغة {{language}}"
+
+  }
+}
