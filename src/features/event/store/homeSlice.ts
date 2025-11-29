@@ -25,11 +25,8 @@ const homeSlice = createSlice({
     setError(state, action: PayloadAction<string | null>) {
       state.error = action.payload;
     },
-    resetError(state) {
-      state.error = null;
-    },
   },
 });
 
-export const { setSearch, setKeyword, setError, resetError } = homeSlice.actions;
+export const { setSearch, setKeyword, setError } = homeSlice.actions;
 export default homeSlice.reducer;

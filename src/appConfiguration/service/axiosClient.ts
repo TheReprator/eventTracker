@@ -2,6 +2,7 @@ import axios, { Method } from 'axios';
 import { API_BASE_URL, API_TIMEOUT, API_KEY } from '@env';
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
 import { AxiosError, AxiosRequestConfig } from "axios";
+import { SerializedError } from '@reduxjs/toolkit';
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -12,16 +13,9 @@ const axiosInstance = axios.create({
   params: { apikey: API_KEY }
 });
 
-axiosInstance.interceptors.response.use(res => res, err => {
-  const msg = err?.response?.data?.errors?.[0]?.detail || err.message || 'API Error';
-  console.log("axios interceptor API Error:", msg);
-  return Promise.reject({ message: msg });
-});
-
-
 const axiosBaseQuery = ({ baseUrl } = { baseUrl: "" }): BaseQueryFn<
   { url: string; method: string; data?: any; params?: any; headers?: any; body?: any },
-  unknown, unknown> =>
+  unknown, unknown > =>
   async ({ url, method, data, params, headers, body }) => {
     try {
       const config: AxiosRequestConfig = {
@@ -35,19 +29,29 @@ const axiosBaseQuery = ({ baseUrl } = { baseUrl: "" }): BaseQueryFn<
 
       const result = await axiosInstance(config);
 
-      const resultFinal =  { data: result };
-      console.log("axiosBaseQuery API success:", resultFinal);
-      
-      return resultFinal;
+      return { data: result.data };
     } catch (error) {
       const axiosError = error as AxiosError;
-      const errorMessage = {
+      return {
         error: axiosError?.response?.data ?? axiosError,
       };
-
-      console.log("axiosBaseQuery API Error:", errorMessage);
-      return errorMessage
     }
   };
 
 export default axiosBaseQuery;
+
+
+export function getServerErrorMessage(err: any): string | null {
+  if (!err) return null;
+
+  if (err.error) {
+    if (typeof err.error === "string") return err.error;
+    if (typeof err.error.message === "string") return err.error.message;
+    return JSON.stringify(err.error);
+  }
+
+  const serial = err as SerializedError;
+  if (serial.message) return serial.message;
+
+  return "Something went wrong";
+}

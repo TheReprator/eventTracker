@@ -3,15 +3,43 @@ import { searchSchema } from "../store/searchSchema";
 import { setError } from "../store/homeSlice";
 import { useSearchEventsQuery } from "../api/eventApi";
 import { mapEventContainer } from "../mapper/eventMapper";
+import { useEffect, useState, useMemo } from "react";
+import { debounce } from "@/utils/debounce";
+import { getServerErrorMessage } from "@/appConfiguration/service/axiosClient";
 
 export const useHome = () => {
   const dispatch = useAppDispatch();
   const { search, keyword, error } = useAppSelector((s) => s.home);
   const favoriteIds = useAppSelector((s) => s.favorites.ids);
 
+  useEffect(() => {
+    if (error)
+      dispatch(setError(null));
+  }, [keyword, search]);
+
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+  const [debouncedKeyword, setDebouncedKeyword] = useState(keyword);
+
+  const debouncer = useMemo(() =>
+    debounce((search: string, keyword: string) => {
+      setDebouncedSearch(search);
+      setDebouncedKeyword(keyword);
+    }),
+    []
+  );
+
+  useEffect(() => {
+    debouncer(search, keyword);
+  }, [search, keyword]);
+
+
   const validate = async () => {
     try {
-      await searchSchema.validate({ search, keyword });
+      await searchSchema.validate({
+        search: search,
+        keyword: keyword,
+      });
+
       dispatch(setError(null));
       return true;
     } catch (e: any) {
@@ -20,24 +48,27 @@ export const useHome = () => {
     }
   };
 
+  const shouldFetch = debouncedKeyword.trim().length >= 3 ||
+    debouncedSearch.trim().length >= 3;
+
   const {
     data,
-    error: serverError,
+    error: rawServerError,
     isFetching,
     refetch,
   } = useSearchEventsQuery(
-    { search, keyword },
-    { skip: !keyword && !search }
+    { search: debouncedSearch, keyword: debouncedKeyword },
+    { skip: !shouldFetch }
   );
 
-  // Mapping container → HomeModelItem[]
   const events = mapEventContainer(favoriteIds, data);
+  const serverError = getServerErrorMessage(rawServerError);
 
   return {
     search,
     keyword,
-    error,               // Yup validation error
-    serverError,         // RTK Query backend error object
+    error,
+    serverError,
     isFetching,
     events,
     validate,
