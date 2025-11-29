@@ -1,48 +1,43 @@
+// localizationSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import i18next from 'i18next';
-import { I18nManager } from 'react-native';
-import RNRestart from 'react-native-restart';
+import * as RNLocalize from "react-native-localize";
 
 export enum LanguageType {
   ARABIC = "ar",
-  ENGLISH = "en"
+  ENGLISH = "en",
 }
 
-type State = { language: LanguageType; isRTL: boolean };
+const locales = RNLocalize.getLocales();
+const deviceLang = locales[0]?.languageCode;
 
-const initialState: State = { language: I18nManager.isRTL ? LanguageType.ARABIC : LanguageType.ENGLISH, isRTL: I18nManager.isRTL };
+const systemLang =
+  deviceLang === "ar" ? LanguageType.ARABIC : LanguageType.ENGLISH;
+
+const initialState = {
+  language: systemLang,
+  isRTL: systemLang === LanguageType.ARABIC,
+};
 
 const slice = createSlice({
-  name: 'localization',
+  name: "localization",
   initialState,
   reducers: {
 
-    toggleLanguage(state) {
-      state.language = state.language === LanguageType.ENGLISH ? LanguageType.ARABIC : LanguageType.ENGLISH;
-      state.isRTL = state.language === LanguageType.ARABIC;
-      i18next.changeLanguage(state.language);
-
-      if (I18nManager.isRTL !== state.isRTL) {
-        I18nManager.forceRTL(state.isRTL);
-        I18nManager.allowRTL(state.isRTL);
-        RNRestart.Restart();
-      }
-    },
-
     setLanguage(state, action: PayloadAction<LanguageType>) {
       state.language = action.payload;
-      state.isRTL = state.language === LanguageType.ARABIC;
-      i18next.changeLanguage(state.language);
+      state.isRTL = action.payload === LanguageType.ARABIC;
+    },
+    toggleLanguage(state) {
+      const next =
+        state.language === LanguageType.ENGLISH
+          ? LanguageType.ARABIC
+          : LanguageType.ENGLISH;
 
-      if (I18nManager.isRTL !== state.isRTL) {
-        I18nManager.forceRTL(state.isRTL);
-        I18nManager.allowRTL(state.isRTL);
-        RNRestart.Restart();
-      }
+      state.language = next;
+      state.isRTL = next === LanguageType.ARABIC;
     }
-
-  }
+  },
 });
 
-export const { toggleLanguage, setLanguage } = slice.actions;
+export const { setLanguage, toggleLanguage } = slice.actions;
 export default slice.reducer;

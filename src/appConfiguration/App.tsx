@@ -3,11 +3,11 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ActivityIndicator, StatusBar, View } from 'react-native';
 import { store, persistor } from '@/appConfiguration/store/rootStore';
-import i18n from '@/appConfiguration/localization/i18n';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppNavigator from './navigation/AppNavigator';
 import { AppThemeProvider, useAppTheme } from './theme/ThemeContext';
 import { LocaleProvider } from './localization/LocaleContext';
+import { applyLocalization } from './store/slices/localizationEffectMiddleware';
 
 const AppContent = () => {
 
@@ -20,15 +20,14 @@ const AppContent = () => {
   );
 };
 
-const App = () => {
+const App: React.FC = () => {
   return (
     <Provider store={store}>
       <PersistGate
         persistor={persistor}
         onBeforeLift={() => {
-          const state = store.getState();
-          const lang = state.localization.language;
-          i18n.changeLanguage(lang);
+          const { language, isRTL } = store.getState().localization;
+          applyLocalization(language, isRTL);
         }}
         loading={
           <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
