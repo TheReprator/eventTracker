@@ -1,4 +1,3 @@
-// localizationSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import * as RNLocalize from "react-native-localize";
 

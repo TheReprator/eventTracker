@@ -1,6 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import EventScreen from "@/features/event/EventScreen";
+import EventScreen from "@/features/event/screens/EventScreen";
 import ProfileScreen from "@/features/profile/ProfileScreen";
 import { TAB_ROUTES, TabRouteNames, TabStackParamList } from "@/types/navigation";
 import { useAppLocale } from "@/appConfiguration/localization/LocaleContext";

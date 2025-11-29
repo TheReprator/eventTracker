@@ -28,8 +28,13 @@ metro-restart:
 	npx react-native start --reset-cache
 
 
-adbLocalChangeArabic:
-	adb shell settings put system system_locales ar-SA: adb reboot
+adbLocalArabic:
+	adb shell settings put system system_locales ar-SA
+	adb reboot
+
+adbLocalEng:
+	adb shell settings put system system_locales en-GB
+	adb reboot
 
 
 adbNightModeOn:
