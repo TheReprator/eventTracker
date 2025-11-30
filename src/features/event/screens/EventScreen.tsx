@@ -1,10 +1,18 @@
 import React from "react";
-import { View, Text, TextInput, Button, FlatList, ActivityIndicator } from "react-native";
+import { View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
 import { useHome } from "../hooks/useHome";
 import { useAppDispatch } from "@/appConfiguration/store/hooks";
 import { setKeyword, setSearch } from "../store/homeSlice";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import EventCard from "../components/EventCard";
+import { SearchInputs } from "./components/SearchInputs";
+import { Loader } from "./components/Loader";
+import { ErrorMessage } from "./components/Error";
+import { EmptyState } from "./components/EmptyState";
+import { EventList } from "./components/EventList";
+import { toggleFavorite } from "../store/favoritesSlice";
+import { HomeModelItem } from "../types/homeModel";
+
 
 const EventScreen: React.FC = () => {
   const {
@@ -19,64 +27,72 @@ const EventScreen: React.FC = () => {
   } = useHome();
 
   const dispatch = useAppDispatch();
+  const insets = useSafeAreaInsets();
 
   const onSubmit = async () => {
+    if (isFetching) return;
+    
     const ok = await validate();
     if (ok) retry();
   };
 
-  const insets = useSafeAreaInsets();
-  
   return (
     <View style={{ paddingTop: insets.top, flex: 1 }}>
 
-      <TextInput
-        placeholder="Search"
-        value={search}
-         onChangeText={(t) => dispatch(setSearch(t))}
+      <SearchInputs
+        search={search}
+        keyword={keyword}
+        error={error}
+        onSearchChange={(text) => dispatch(setSearch(text))}
+        onKeywordChange={(text) => dispatch(setKeyword(text))}
+        onSubmit={onSubmit}
       />
 
-      <TextInput
-        placeholder="Keyword"
-        value={keyword}
-        onChangeText={(t) => dispatch(setKeyword(t))}
-      />
-
-      {/* Validation Error */}
-      {error && (
-        <Text style={{ color: "red", marginBottom: 10 }}>{error}</Text>
-      )}
-
-      <Button title="Search" onPress={onSubmit} />
-
-      {/* Loader */}
-      {isFetching && <ActivityIndicator style={{ marginTop: 20 }} />}
-
-
-      {/* Server Error */}
-      {serverError && !isFetching ? (
-        <View style={{ marginBottom: 10 }}>
-          <Text style={{ color: "red" }}>{serverError}</Text>
-          <Button title="Retry" onPress={retry} />
-        </View>
-      ): null }
-
-
-      {/* Empty State */}
-      {!isFetching && events.length === 0 && !serverError && (
-        <Text style={{ marginTop: 20 }}>No events found.</Text>
-      )}
-
-      {/* Event List */}
-      {!isFetching && !serverError && events.length > 0 ? (
-        <FlatList
-          data={events}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <EventCard item={item} />}
-          style={{ marginTop: 20 }}
-        />
-      ) : null}
+      {renderContent({
+        serverError,
+        isFetching,
+        events,
+        onToggleFavorite: (id) => dispatch(toggleFavorite(id)),
+        retry
+      })}
     </View>
   );
+};
+
+interface RenderContentProps {
+  serverError: string | null;
+  isFetching: boolean;
+  events: HomeModelItem[];
+  onToggleFavorite: (id: string) => void;
+  retry: () => void
 }
+
+const renderContent = ({
+  serverError,
+  isFetching,
+  events,
+  onToggleFavorite,
+  retry
+}: RenderContentProps) => {
+
+  if (isFetching) {
+    return <Loader />;
+  }
+
+  if (serverError) {
+    return <ErrorMessage message={serverError} onRetry={retry} />;
+  }
+
+  if (events.length === 0) {
+    return <EmptyState />;
+  }
+
+  return (
+    <EventList
+      items={events}
+      onToggleFavorite={onToggleFavorite}
+    />
+  );
+};
+
 export default EventScreen;

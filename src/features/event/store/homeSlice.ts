@@ -1,10 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface HomeState {
-  search: string;
-  keyword: string;
-  error: string | null;
-}
+import { HomeState } from "../types/types";
 
 const initialState: HomeState = {
   search: "",

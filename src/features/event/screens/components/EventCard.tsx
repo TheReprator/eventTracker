@@ -1,11 +1,13 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import { useAppDispatch } from "@/appConfiguration/store/hooks";
-import { toggleFavorite } from "../store/favoritesSlice";
-import { HomeModelItem } from "../types/homeModel";
+import { HomeModelItem } from "../../types/homeModel";
 
-export default function EventCard({ item }: { item: HomeModelItem }) {
-  const dispatch = useAppDispatch();
+interface Props {
+  item: HomeModelItem;
+  onToggleFavorite: (id: string) => void;
+}
+
+export const EventCard: React.FC<Props> = ({ item, onToggleFavorite }) => {
 
   return (
     <View style={{ padding: 12, flexDirection: "row" }}>
@@ -15,13 +17,15 @@ export default function EventCard({ item }: { item: HomeModelItem }) {
       />
 
       <View style={{ flex: 1, marginLeft: 12 }}>
-        <Text>{item.name}</Text>
+        <Text numberOfLines={2}>{item.name}</Text>
         <Text>{item.date}</Text>
         <Text>{item.city}</Text>
       </View>
 
-      {/* Favorite Icon */}
-      <TouchableOpacity onPress={() => dispatch(toggleFavorite(item.id))}>
+
+      <TouchableOpacity onPress={() => onToggleFavorite(item.id)}   style={{
+          justifyContent: "center"
+        }}>
         <Text style={{ fontSize: 22 }}>
           {item.isFavorite ? "❤️" : "🤍"}
         </Text>
