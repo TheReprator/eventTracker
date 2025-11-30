@@ -48,8 +48,10 @@ export const useHome = () => {
     }
   };
 
-  const shouldFetch = debouncedKeyword.trim().length >= 3 ||
-    debouncedSearch.trim().length >= 3;
+  const shouldFetch = searchSchema.isValidSync({
+    search: debouncedSearch,
+    keyword: debouncedKeyword,
+  })
 
   const {
     data,
