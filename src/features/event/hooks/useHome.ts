@@ -7,8 +7,9 @@ import { useEffect, useState, useMemo } from "react";
 import { debounce } from "@/utils/debounce";
 import { getServerErrorMessage } from "@/appConfiguration/service/axiosClient";
 import { DebouncedValues, EventHomeScreenState, HomeState } from "../types/types";
-import { defaultLocale, useAppLocale } from "@/appConfiguration/localization/LocaleContext";
+import { useAppLocale } from "@/appConfiguration/localization/LocaleContext";
 import { ObjectSchema } from "yup";
+import { getAppLocaleTag } from "@/appConfiguration/store/slices/localizationSlice";
 
 const useDebouncedSearch = ({ search, keyword }: DebouncedValues) => {
   const [debounced, setDebounced] = useState({
@@ -67,25 +68,24 @@ export const useHome = (): EventHomeScreenState => {
     [t]
   );
 
-  // Auto clear validation error on typing
   useClearErrorOnTyping({ error, search, keyword });
 
-  // Debounce search inputs
   const { search: debouncedSearch, keyword: debouncedKeyword } =
     useDebouncedSearch({ search, keyword });
 
-  // Validate using Yup
   const setValidationError = (msg: string | null) => {
     dispatch(setError(msg));
   };
 
   const validate = useSearchValidation(searchSchema, setValidationError);
 
-  // Determine whether API should run
   const shouldFetch = searchSchema.isValidSync({
     search: debouncedSearch,
     keyword: debouncedKeyword,
   });
+
+  const language = useAppLocale().language
+  const locale = getAppLocaleTag(language)
 
   const {
     data,
@@ -93,7 +93,7 @@ export const useHome = (): EventHomeScreenState => {
     isFetching,
     refetch,
   } = useSearchEventsQuery(
-    { search: debouncedSearch, keyword: debouncedKeyword, locale: defaultLocale()?.languageTag },
+    { search: debouncedSearch, keyword: debouncedKeyword, locale: locale},
     { skip: !shouldFetch }
   );
 

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/appConfiguration/store/rootStore';
 import { toggleLanguage, setLanguage, LanguageType } from '@/appConfiguration/store/slices/localizationSlice';
 import { useTranslation } from 'react-i18next';
-import * as RNLocalize from "react-native-localize";
 
 export interface LocaleContextType {
   language: LanguageType;
@@ -55,8 +54,3 @@ export const useAppLocale = () => {
   if (!ctx) throw new Error("useAppLocale must be used inside LocaleProvider");
   return ctx;
 };
-
-export const defaultLocale =() => {
-  const locales = RNLocalize.getLocales();
-  return locales[0]
-} 

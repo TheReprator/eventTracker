@@ -2,29 +2,41 @@ import { useAppLocale } from '@/appConfiguration/localization/LocaleContext';
 import { useAppTheme } from '@/appConfiguration/theme/ThemeContext';
 import { useThemedStyles } from '@/hooks/useThemedStyle';
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function ProfileScreen() {
 
-  const { t, language, toggleLocale } = useAppLocale();
-  const appTheme = useAppTheme();
-
+  const insets = useSafeAreaInsets();
+  
   const styles = useThemedStyles((theme) => ({
     container: {
-      flex: 1,
       backgroundColor: theme.colors.background,
-      padding: 16,
+      paddingTop: insets.top, 
+      paddingHorizontal: theme.spacing.large,
+      gap: theme.spacing.large
     },
     title: {
       color: theme.colors.textPrimary,
-      fontSize: 20,
-      marginBottom: 12,
     },
     label: {
       color: theme.colors.textSecondary,
-      marginBottom: 12,
+    },
+    button: {
+      justifyContent: "center",
+      alignItems: "center",
+      paddingVertical: theme.spacing.medium,
+      paddingHorizontal: theme.spacing.large,
+      borderRadius: theme.borderRadius.large,
+      backgroundColor: theme.colors.primary,
+      shadowRadius: theme.borderRadius.medium,
+      elevation: theme.spacing.small,
     },
   }));
+
+
+  const { t, language, toggleLocale } = useAppLocale();
+  const appTheme = useAppTheme();
 
   return (
     <View style={styles.container}>
@@ -33,12 +45,17 @@ export default function ProfileScreen() {
 
       <Text style={styles.label}>Language: {language}</Text>
 
-      <Button title={t("profileScreen.toggleLanguage", { language: language })} onPress={toggleLocale} />
+      <TouchableOpacity onPress={toggleLocale} style={styles.button}>
+        <Text style={styles.title}>
+          {t("profileScreen.toggleLanguage", { language: language })}
+        </Text>
+      </TouchableOpacity>
 
-      <Button
-        title={t('profileScreen.toggleTheme')}
-        onPress={appTheme.toggleTheme}
-      />
+      <TouchableOpacity onPress={appTheme.toggleTheme} style={styles.button}>
+        <Text style={styles.title}>
+          {t("profileScreen.toggleTheme")}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }

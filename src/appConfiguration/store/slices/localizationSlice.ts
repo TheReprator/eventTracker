@@ -1,13 +1,25 @@
-import { defaultLocale } from '@/appConfiguration/localization/LocaleContext';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import * as RNLocalize from "react-native-localize";
 
 export enum LanguageType {
   ARABIC = "ar",
   ENGLISH = "en",
 }
 
+const localeMap: Record<LanguageType, string> = {
+  [LanguageType.ENGLISH]: "en-gb",
+  [LanguageType.ARABIC]: "ar-sa",
+};
+
+export const getAppLocaleTag = (lang: LanguageType): string => {
+  return localeMap[lang];
+};
+
+const locales = RNLocalize.getLocales();
+const deviceLang = locales[0]?.languageCode;
+
 const systemLang =
-  defaultLocale()?.languageCode === "ar" ? LanguageType.ARABIC : LanguageType.ENGLISH;
+  deviceLang === "ar" ? LanguageType.ARABIC : LanguageType.ENGLISH;
 
 const initialState = {
   language: systemLang,
