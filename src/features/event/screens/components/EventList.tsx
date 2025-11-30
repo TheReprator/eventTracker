@@ -6,15 +6,17 @@ import { EventCard } from "./EventCard";
 interface Props {
   items: HomeModelItem[];
   onToggleFavorite: (id: string) => void;
+  onItemClick: (id: string) => void;
 }
 
-export const EventList: React.FC<Props> = ({ items, onToggleFavorite }) => {
+export const EventList: React.FC<Props> = ({ items, onToggleFavorite, onItemClick }) => {
   return (
     <FlatList
       data={items}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <EventCard item={item} onToggleFavorite={onToggleFavorite} />
+        <EventCard item={item} onToggleFavorite={onToggleFavorite}
+          onItemClick={onItemClick} />
       )}
     />
   );

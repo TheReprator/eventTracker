@@ -8,12 +8,15 @@
     },
     "homeScreen": {
         "keyword": "keyword",
-        "city": "city",
-        "submit": "submit"
+        "search": "Search city",
+        "submit": "Submit",
+        "searchError":"Either keyword or city should be minimum of {{length}} characters",
+        "searchNoData":"No Data is available",
+        "retry":"Retry"
     },
     "profileScreen": {
         "title": "Profile",
         "toggleTheme": "Toggle Theme",
-        "toggleLanguage": "Toggle Language  {{language}}"
+        "toggleLanguage": "Toggle Language {{language}}"
     }
 }

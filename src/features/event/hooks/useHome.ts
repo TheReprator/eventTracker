@@ -1,5 +1,5 @@
 import { useAppSelector, useAppDispatch } from "@/appConfiguration/store/hooks";
-import { searchSchema } from "../store/searchSchema";
+import { createSearchSchema, EVEN_SEARCH_MIN_LENGTH } from "../store/searchSchema";
 import { setError } from "../store/homeSlice";
 import { useSearchEventsQuery } from "../api/eventApi";
 import { mapEventContainer } from "../mapper/eventMapper";
@@ -7,6 +7,8 @@ import { useEffect, useState, useMemo } from "react";
 import { debounce } from "@/utils/debounce";
 import { getServerErrorMessage } from "@/appConfiguration/service/axiosClient";
 import { DebouncedValues, EventHomeScreenState, HomeState } from "../types/types";
+import { defaultLocale, useAppLocale } from "@/appConfiguration/localization/LocaleContext";
+import { ObjectSchema } from "yup";
 
 const useDebouncedSearch = ({ search, keyword }: DebouncedValues) => {
   const [debounced, setDebounced] = useState({
@@ -29,7 +31,7 @@ const useDebouncedSearch = ({ search, keyword }: DebouncedValues) => {
   return debounced;
 };
 
-const useSearchValidation = (setError: (msg: string | null) => void) => {
+const useSearchValidation = (searchSchema: ObjectSchema<DebouncedValues>, setError: (msg: string | null) => void) => {
 
   const validate = async ({ search, keyword }: DebouncedValues) => {
     try {
@@ -55,23 +57,29 @@ export const useClearErrorOnTyping = ({ error, search, keyword }: HomeState) => 
 
 export const useHome = (): EventHomeScreenState => {
   const dispatch = useAppDispatch();
-  
+
   const { search, keyword, error } = useAppSelector((s) => s.home);
   const favoriteIds = useAppSelector((s) => s.favorites.ids);
 
+  const { t } = useAppLocale();
+  const searchSchema = useMemo(
+    () => createSearchSchema(t("homeScreen.searchError", { length: EVEN_SEARCH_MIN_LENGTH })),
+    [t]
+  );
+
   // Auto clear validation error on typing
-  useClearErrorOnTyping({error, search, keyword});
+  useClearErrorOnTyping({ error, search, keyword });
 
   // Debounce search inputs
   const { search: debouncedSearch, keyword: debouncedKeyword } =
     useDebouncedSearch({ search, keyword });
 
   // Validate using Yup
-   const setValidationError = (msg: string | null) => {
+  const setValidationError = (msg: string | null) => {
     dispatch(setError(msg));
   };
 
-  const validate = useSearchValidation(setValidationError);
+  const validate = useSearchValidation(searchSchema, setValidationError);
 
   // Determine whether API should run
   const shouldFetch = searchSchema.isValidSync({
@@ -79,14 +87,13 @@ export const useHome = (): EventHomeScreenState => {
     keyword: debouncedKeyword,
   });
 
-
   const {
     data,
     error: rawServerError,
     isFetching,
     refetch,
   } = useSearchEventsQuery(
-    { search: debouncedSearch, keyword: debouncedKeyword },
+    { search: debouncedSearch, keyword: debouncedKeyword, locale: defaultLocale()?.languageTag },
     { skip: !shouldFetch }
   );
 

@@ -1,7 +1,6 @@
 import React from "react";
 import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
 import { useHome } from "../hooks/useHome";
 import { useAppDispatch } from "@/appConfiguration/store/hooks";
 import { setKeyword, setSearch } from "../store/homeSlice";
@@ -12,9 +11,21 @@ import { EmptyState } from "./components/EmptyState";
 import { EventList } from "./components/EventList";
 import { toggleFavorite } from "../store/favoritesSlice";
 import { HomeModelItem } from "../types/homeModel";
+import { useAppTheme } from "@/appConfiguration/theme/ThemeContext";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList, ROUTES } from "@/types/navigation";
+import { useNavigation } from "@react-navigation/native";
 
+type EventDetailNavProp = NativeStackNavigationProp<RootStackParamList, typeof ROUTES.EventDetail>;
 
 const EventScreen: React.FC = () => {
+
+  const navigation = useNavigation<EventDetailNavProp>();
+
+  const openEventDetail = (id: string) => {
+    navigation.navigate(ROUTES.EventDetail, { id });
+  };
+
   const {
     search,
     keyword,
@@ -31,13 +42,18 @@ const EventScreen: React.FC = () => {
 
   const onSubmit = async () => {
     if (isFetching) return;
-    
+
     const ok = await validate();
     if (ok) retry();
   };
 
+  const theme = useAppTheme();
+
   return (
-    <View style={{ paddingTop: insets.top, flex: 1 }}>
+    <View style={{
+      paddingTop: insets.top, flex: 1, paddingHorizontal: theme.theme.spacing.medium,
+      gap: theme.theme.spacing.large
+    }}>
 
       <SearchInputs
         search={search}
@@ -53,6 +69,7 @@ const EventScreen: React.FC = () => {
         isFetching,
         events,
         onToggleFavorite: (id) => dispatch(toggleFavorite(id)),
+        onItemClick: openEventDetail,
         retry
       })}
     </View>
@@ -64,6 +81,7 @@ interface RenderContentProps {
   isFetching: boolean;
   events: HomeModelItem[];
   onToggleFavorite: (id: string) => void;
+  onItemClick: (id: string) => void;
   retry: () => void
 }
 
@@ -72,6 +90,7 @@ const renderContent = ({
   isFetching,
   events,
   onToggleFavorite,
+  onItemClick,
   retry
 }: RenderContentProps) => {
 
@@ -91,6 +110,7 @@ const renderContent = ({
     <EventList
       items={events}
       onToggleFavorite={onToggleFavorite}
+      onItemClick={onItemClick}
     />
   );
 };

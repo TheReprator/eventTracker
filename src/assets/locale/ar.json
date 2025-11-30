@@ -1,20 +1,22 @@
 {
   "splashScreen": {
-    "message": "مرحبًا بك في متعقب الأحداث"
+    "message": "مرحبًا بك في متتبع الفعاليات"
   },
   "rootTab": {
-    "Event": "الرئيسية",
+    "Event": "الفعاليات",
     "Profile": "الملف الشخصي"
   },
   "homeScreen": {
     "keyword": "الكلمة المفتاحية",
-    "city": "المدينة",
-    "submit": "إرسال"
+    "search": "ابحث عن المدينة",
+    "submit": "إرسال",
+    "searchError": "يجب أن تحتوي الكلمة المفتاحية أو المدينة على {{length}} أحرف على الأقل",
+    "searchNoData": "لا توجد بيانات متاحة",
+    "retry": "إعادة المحاولة"
   },
   "profileScreen": {
     "title": "الملف الشخصي",
-    "toggleTheme": "تغيير النمط إلى ",
-    "toggleLanguage": "تبديل اللغة {{language}}"
-
+    "toggleTheme": "تغيير المظهر",
+    "toggleLanguage": "تغيير اللغة {{language}}"
   }
 }

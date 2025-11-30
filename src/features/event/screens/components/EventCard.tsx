@@ -1,35 +1,65 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { HomeModelItem } from "../../types/homeModel";
+import { BaseTheme } from "@/appConfiguration/theme/theme";
+import { useAppTheme } from "@/appConfiguration/theme/ThemeContext";
 
 interface Props {
   item: HomeModelItem;
   onToggleFavorite: (id: string) => void;
+  onItemClick: (id: string) => void;
 }
 
-export const EventCard: React.FC<Props> = ({ item, onToggleFavorite }) => {
+export const EventCard: React.FC<Props> = ({ item, onToggleFavorite, onItemClick }) => {
+
+  const theme = useAppTheme();
+  const styles = makeStyles(theme.theme);
 
   return (
-    <View style={{ padding: 12, flexDirection: "row" }}>
+    <TouchableOpacity
+      onPress={() => onItemClick(item.id)} style={styles.container}>
       <Image
         source={{ uri: item.imageUrl }}
-        style={{ width: 80, height: 80, borderRadius: 6 }}
+        style={styles.imageDimension}
       />
 
-      <View style={{ flex: 1, marginLeft: 12 }}>
-        <Text numberOfLines={2}>{item.name}</Text>
-        <Text>{item.date}</Text>
-        <Text>{item.city}</Text>
+      <View style={styles.infoContainer}>
+        <Text numberOfLines={2} style={styles.text}>{item.name}</Text>
+        <Text style={styles.text}>{item.date}</Text>
+        <Text style={styles.text}>{item.city}</Text>
       </View>
 
-
-      <TouchableOpacity onPress={() => onToggleFavorite(item.id)}   style={{
-          justifyContent: "center"
-        }}>
+      <TouchableOpacity onPress={() => onToggleFavorite(item.id)} style={styles.bookMark}>
         <Text style={{ fontSize: 22 }}>
           {item.isFavorite ? "❤️" : "🤍"}
         </Text>
       </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   );
 }
+
+
+const makeStyles = ({ spacing, borderRadius, colors }: BaseTheme) =>
+  StyleSheet.create({
+    container: {
+      padding: spacing.large,
+      flexDirection: "row",
+      backgroundColor: colors.card,
+      marginBottom: spacing.large,
+      borderRadius: borderRadius.medium,
+    },
+    imageDimension: {
+      width: 80, height: 80, borderRadius: borderRadius.medium
+    },
+    infoContainer: {
+      flex: 1, marginHorizontal: spacing.medium, gap: spacing.small
+    },
+    text: {
+      color: colors.textPrimary
+    },
+    bookMark: {
+      justifyContent: "center",
+      alignItems: "center",
+      paddingHorizontal: spacing.medium,
+    }
+  });

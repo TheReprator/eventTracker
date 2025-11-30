@@ -1,5 +1,8 @@
+import { useAppLocale } from "@/appConfiguration/localization/LocaleContext";
+import { BaseTheme } from "@/appConfiguration/theme/theme";
+import { useAppTheme } from "@/appConfiguration/theme/ThemeContext";
 import React from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, StyleSheet } from "react-native";
 
 interface Props {
   message: string;
@@ -7,11 +10,29 @@ interface Props {
 }
 
 export const ErrorMessage: React.FC<Props> = ({ message, onRetry }) => {
+  const theme = useAppTheme();
+  const styles = makeStyles(theme.theme);
+  const { t } = useAppLocale();
+
   return (
-    <View style={{ marginTop: 20 }}>
-      <Text style={{ color: "red" }}>{message}</Text>
-      <Button title="Retry" onPress={onRetry} />
+    <View style={styles.container}>
+      <Text style={styles.text}>{message}</Text>
+      <Button title={t("homeScreen.retry")} onPress={onRetry} />
     </View>
   );
 };
 
+
+const makeStyles = ({ spacing, borderRadius, colors }: BaseTheme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: colors.background,
+      padding: spacing.large
+    },
+    text: {
+      color: colors.textPrimary
+    }
+  });
