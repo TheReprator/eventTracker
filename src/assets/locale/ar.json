@@ -1,6 +1,6 @@
 {
   "splashScreen": {
-    "message": "مرحبًا بك في متتبع الفعاليات"
+    "message": "مرحبًا بك في متعقب الفعاليات"
   },
   "rootTab": {
     "Event": "الفعاليات",
@@ -8,20 +8,26 @@
   },
   "homeScreen": {
     "keyword": "الكلمة المفتاحية",
-    "search": "ابحث عن المدينة",
-    "submit": "إرسال",
-    "searchError": "يجب أن تحتوي الكلمة المفتاحية أو المدينة على {{length}} أحرف على الأقل",
+    "search": "ابحث عن مدينة",
+    "submit": "بحث",
+    "searchError": "يجب أن تكون الكلمة المفتاحية أو المدينة بحد أدنى {{length}} أحرف",
     "searchNoData": "لا توجد بيانات متاحة",
     "retry": "إعادة المحاولة"
   },
   "profileScreen": {
     "title": "الملف الشخصي",
     "toggleTheme": "تغيير المظهر",
-    "toggleLanguage": "تغيير اللغة {{language}}"
+    "toggleLanguage": "تغيير اللغة إلى {{language}}"
   },
   "eventDetailScreen": {
-    "title": "الملف الشخصي",
-    "toggleTheme": "تغيير المظهر",
-    "toggleLanguage": "تغيير اللغة {{language}}"
+    "titleEventDetail": "تفاصيل الفعالية",
+    "titleEventName": "الاسم",
+    "titleEventType": "النوع",
+    "titleEventDate": "التاريخ",
+    "titleVenueDetail": "تفاصيل الموقع",
+    "titleVenueName": "الموقع",
+    "titleVenueCity": "المدينة",
+    "titleVenuAddress": "العنوان",
+    "titleVenueCoordinates": "الإحداثيات"
   }
 }

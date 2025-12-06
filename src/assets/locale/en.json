@@ -27,6 +27,7 @@
         "titleVenueDetail": "Venue Details",
         "titleVenueName": "Venue",
         "titleVenueCity": "City",
-        "titleVenuAddress": "Address"
+        "titleVenuAddress": "Address",
+        "titleVenueCoordinates":"Coordinates"
     }
 }

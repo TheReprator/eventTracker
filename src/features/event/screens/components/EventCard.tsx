@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { HomeModelItem } from "../../types/homeModel";
 import { BaseTheme } from "@/appConfiguration/theme/theme";
 import { useAppTheme } from "@/appConfiguration/theme/ThemeContext";
+import { useAppLocale } from "@/appConfiguration/localization/LocaleContext";
 
 interface Props {
   item: HomeModelItem;
@@ -13,7 +14,8 @@ interface Props {
 export const EventCard: React.FC<Props> = ({ item, onToggleFavorite, onItemClick }) => {
 
   const theme = useAppTheme();
-  const styles = makeStyles(theme.theme);
+  const appLocale = useAppLocale();
+  const styles = makeStyles(theme.theme, appLocale.isRTL);
 
   return (
     <TouchableOpacity
@@ -39,7 +41,7 @@ export const EventCard: React.FC<Props> = ({ item, onToggleFavorite, onItemClick
 }
 
 
-const makeStyles = ({ spacing, borderRadius, colors }: BaseTheme) =>
+const makeStyles = ({ spacing, borderRadius, colors }: BaseTheme, isRTL: boolean) =>
   StyleSheet.create({
     container: {
       padding: spacing.large,
@@ -55,6 +57,7 @@ const makeStyles = ({ spacing, borderRadius, colors }: BaseTheme) =>
       marginHorizontal: spacing.medium, gap: spacing.small
     },
     text: {
+      writingDirection: isRTL ? "rtl":'ltr',
       color: colors.textPrimary
     },
     bookMark: {

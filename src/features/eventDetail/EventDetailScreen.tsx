@@ -49,7 +49,7 @@ export default function EventDetailScreen() {
           <DetailItem label={t("eventDetailScreen.titleVenueCity")} value={venue.city} />
           <DetailItem label={t("eventDetailScreen.titleVenuAddress")} value={venue.address} />
           <DetailItem
-            label="Coordinates"
+            label={t("eventDetailScreen.titleVenueCoordinates")}
             value={`${venue.location.latitude}, ${venue.location.longitude}`}
           />
         </DetailSection>

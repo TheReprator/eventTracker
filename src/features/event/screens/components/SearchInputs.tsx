@@ -22,8 +22,12 @@ export const SearchInputs: React.FC<Props> = ({
   error,
 }) => {
 
-  const styles = useThemedStyles((theme) => ({
+  const styles = useThemedStyles((theme, isRTL) => ({
+    container: {
+      gap: theme.spacing.large
+    },
     textLayout: {
+      textAlign: isRTL ? 'right' : 'left',
       padding: theme.spacing.large,
       borderRadius: theme.borderRadius.medium,
       borderWidth: 1,
@@ -54,7 +58,7 @@ export const SearchInputs: React.FC<Props> = ({
   const { t } = useAppLocale();
 
   return (
-    <View style = {{gap: appTheme.theme.spacing.large}}>
+    <View style = {styles.container}>
 
       <TextInput
         style={styles.textLayout}

@@ -19,6 +19,12 @@ export const VenueMap = ({ venue }: { venue: HomeModelVenueDetail }) => {
         <View style={styles.container}>
              <MapView
                 style={styles.map}
+                scrollEnabled={false}
+                zoomEnabled={false}
+                rotateEnabled={false}
+                pitchEnabled={false}
+                toolbarEnabled={false}
+                zoomControlEnabled={false}
                 initialRegion={{
                     latitude,
                     longitude,

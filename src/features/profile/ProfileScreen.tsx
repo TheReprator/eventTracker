@@ -9,21 +9,23 @@ export default function ProfileScreen() {
 
   const insets = useSafeAreaInsets();
   
-  const styles = useThemedStyles((theme) => ({
+  const styles = useThemedStyles((theme, isRTL) => ({
     container: {
+      flex:1,
       backgroundColor: theme.colors.background,
       paddingTop: insets.top, 
       paddingHorizontal: theme.spacing.large,
       gap: theme.spacing.large
     },
     title: {
+      writingDirection: isRTL ? "rtl":'ltr',
       color: theme.colors.textPrimary,
     },
     label: {
+      writingDirection: isRTL ? "rtl":'ltr',
       color: theme.colors.textSecondary,
     },
     button: {
-      justifyContent: "center",
       alignItems: "center",
       paddingVertical: theme.spacing.medium,
       paddingHorizontal: theme.spacing.large,

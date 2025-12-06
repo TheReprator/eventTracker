@@ -1,3 +1,4 @@
+import { useAppLocale } from "@/appConfiguration/localization/LocaleContext";
 import { BaseTheme } from "@/appConfiguration/theme/theme";
 import { useAppTheme } from "@/appConfiguration/theme/ThemeContext";
 import React from "react";
@@ -9,7 +10,8 @@ export const DetailSection = ({ title, children }: {
 }) => {
 
     const theme = useAppTheme();
-    const styles = makeStyles(theme.theme);
+    const appLocale = useAppLocale();
+    const styles = makeStyles(theme.theme, appLocale.isRTL);
 
     return (
         <View style={styles.section}>
@@ -19,7 +21,7 @@ export const DetailSection = ({ title, children }: {
     )
 };
 
-const makeStyles = ({ borderRadius, colors, spacing }: BaseTheme) =>
+const makeStyles = ({ borderRadius, colors, spacing }: BaseTheme, isRTL: boolean) =>
     StyleSheet.create({
         section: {
             padding: spacing.large,
@@ -27,6 +29,7 @@ const makeStyles = ({ borderRadius, colors, spacing }: BaseTheme) =>
             borderRadius: borderRadius.medium,
         },
         title: {
+            writingDirection: isRTL ? "rtl":'ltr',
             fontSize: 18,
             fontWeight: "600",
             marginBottom: spacing.large,
