@@ -1,0 +1,32 @@
+{
+    "splashScreen": {
+        "message": "Welcome to Event Tracker"
+    },
+    "rootTab": {
+        "Event": "Event",
+        "Profile": "Profile"
+    },
+    "homeScreen": {
+        "keyword": "keyword",
+        "search": "Search city",
+        "submit": "Submit",
+        "searchError":"Either keyword or city should be minimum of {{length}} characters",
+        "searchNoData":"No Data is available",
+        "retry":"Retry"
+    },
+    "profileScreen": {
+        "title": "Profile",
+        "toggleTheme": "Toggle Theme",
+        "toggleLanguage": "Toggle Language {{language}}"
+    },
+    "eventDetailScreen": {
+        "titleEventDetail": "Event Details",
+        "titleEventName": "Name",
+        "titleEventType": "Type",
+        "titleEventDate": "Date",
+        "titleVenueDetail": "Venue Details",
+        "titleVenueName": "Venue",
+        "titleVenueCity": "City",
+        "titleVenuAddress": "Address"
+    }
+}
