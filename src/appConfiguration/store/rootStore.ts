@@ -13,11 +13,9 @@ const rootReducer = combineReducers({
   localization: localizationReducer,
   theme: themeReducer,
 
-  // ⭐ Your new slices
   favorites: favoritesReducer,
   home: eventReducer,
 
-  // ⭐ Required for RTK Query
   [homeApi.reducerPath]: homeApi.reducer,
 });
 
