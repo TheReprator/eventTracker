@@ -1,9 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Appearance } from 'react-native';
 
+const getInitialState = () => ({
+  isDark: Appearance.getColorScheme() === "dark",
+});
+
 const slice = createSlice({
   name: 'theme',
-  initialState: { isDark: Appearance.getColorScheme() === 'dark' },
+  initialState: getInitialState,
   reducers: {
     toggleTheme(state){
       state.isDark = !state.isDark;

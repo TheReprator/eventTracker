@@ -22,8 +22,6 @@ export const AppThemeProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const toggleTheme = () => dispatch(toggleThemeAction());
 
-
-
   return (
     <ThemeContext.Provider value={{ theme, isDark, toggleTheme }}>
       <NavigationContainer theme={theme}>

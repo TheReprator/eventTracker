@@ -24,9 +24,10 @@ module.exports = {
     // "\\.(css|less)$": "<rootDir>/jest/mocks/styleMock.js",
     "^react-native-restart$": "<rootDir>/jest/mocks/react-native-restart.js",
     "^react-native-localize$": "<rootDir>/jest/mocks/react-native-localize.js",
-    "^react-native$": "<rootDir>/src/appConfiguration/store/slices/__test__/__mock__/I18nManager.mock.ts",
+    "^react-native$": "<rootDir>/src/appConfiguration/store/slices/__test__/__mock__/react-native.mock.ts",
     "^@/appConfiguration/localization/i18n$": "<rootDir>/src/appConfiguration/localization/__test__/__mock__/i18n.mock.ts",
     "^react-i18next$": "<rootDir>/src/appConfiguration/localization/__test__/__mock__/react-i18next.mock.ts",
+    '^@react-navigation/native$':'<rootDir>/src/appConfiguration/theme/__test__/__mock__/react-navigation-native.ts',
   },
   
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
