@@ -28,6 +28,9 @@ module.exports = {
     "^@/appConfiguration/localization/i18n$": "<rootDir>/src/appConfiguration/localization/__test__/__mock__/i18n.mock.ts",
     "^react-i18next$": "<rootDir>/src/appConfiguration/localization/__test__/__mock__/react-i18next.mock.ts",
     '^@react-navigation/native$':'<rootDir>/src/appConfiguration/theme/__test__/__mock__/react-navigation-native.ts',
+    '^redux-logger':'<rootDir>/src/appConfiguration/store/__test__/__mock__/logger.mock.ts',
+    '^@react-native-async-storage/async-storage':'<rootDir>/src/appConfiguration/store/__test__/__mock__/asyncStorage.mock.ts',
+    '^redux-persist':'<rootDir>/src/appConfiguration/store/__test__/__mock__/redux-persist.mock.ts',
   },
   
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
