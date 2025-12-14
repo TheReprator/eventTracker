@@ -1,9 +1,10 @@
-import { Middleware } from '@reduxjs/toolkit';
+import { isAnyOf, Middleware } from '@reduxjs/toolkit';
 import { persistor, store } from '../rootStore';
 import i18n from '@/appConfiguration/localization/i18n';
 import { I18nManager } from 'react-native';
 import RNRestart from 'react-native-restart';
 import type { RootState } from '../rootStore';
+import { setLanguage,toggleLanguage } from './localizationSlice';
 
 export const localizationEffectMiddleware: Middleware<{}, RootState> =
   (storeAPI) => {
@@ -12,6 +13,10 @@ export const localizationEffectMiddleware: Middleware<{}, RootState> =
     return next => action => {
       const result = next(action);
 
+      if (!isAnyOf(setLanguage, toggleLanguage)(action)) {
+          return result;
+      }
+    
       const { language } = storeAPI.getState().localization;
 
       const changed = lastLang !== null && lastLang !== language;
